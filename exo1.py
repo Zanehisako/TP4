@@ -1,4 +1,6 @@
 import pandas as pd
+import matplotlib.pyplot as plt,seaborn as sns
+
 df = pd.read_csv('players.csv')
 #Question 1
 df.current_club_id =df.current_club_id.astype('category')
@@ -26,4 +28,22 @@ df_contrat['market_value_bracket'] = pd.qcut(df_contrat.market_value_in_eur,q=6)
 print(df_contrat['market_value_bracket'].tail())
 df_contrat= df_contrat.sort_values(by=['market_value_bracket'],ascending=False)
 print(df_contrat.head())
+
+#Part Two Visualisation des données
+#Question 1
+"""
+market_value= df_contrat['market_value_in_eur'].dropna()
+sns.lineplot(x=df_contrat.year_remaining,y=market_value)
+plt.show()
+"""
+#Question 2
+"""
+sns.lineplot(data=df_contrat.set_index('age')[['market_value_in_eur','highest_market_value_in_eur']],errorbar=None)
+plt.show()
+"""
+#Multiplle plots
+fg =sns.FacetGrid(df_contrat,col="age_bracket",col_wrap=3)
+fg.map(sns.lineplot,"age","market_value_in_eur")
+plt.show()
+
 
